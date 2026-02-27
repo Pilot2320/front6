@@ -1,0 +1,454 @@
+// ════════════════════════════════════════════════════════════════
+// Занятие 1: CSS-препроцессоры (SASS)
+// Используем: переменные, миксины, вложенность, условные конструкции
+// ════════════════════════════════════════════════════════════════
+
+// ── Переменные ─────────────────────────────────────────────────
+$bg-dark:        #0d1117;
+$bg-panel:       rgba(255, 255, 255, 0.04);
+$border-color:   rgba(255, 255, 255, 0.09);
+
+$text-primary:   #eaedf4;
+$text-muted:     rgba(234, 237, 244, 0.55);
+
+$accent:         #a78bfa;           // фиолетовый — ассоциация с саморазвитием
+$accent-bg:      rgba(167, 139, 250, 0.14);
+$accent-border:  rgba(167, 139, 250, 0.50);
+
+$green:          #34d399;
+$green-bg:       rgba(52, 211, 153, 0.12);
+$green-border:   rgba(52, 211, 153, 0.35);
+
+$amber:          #fbbf24;
+$amber-bg:       rgba(251, 191, 36, 0.12);
+$amber-border:   rgba(251, 191, 36, 0.35);
+
+$danger:         #f87171;
+$danger-bg:      rgba(248, 113, 113, 0.12);
+$danger-border:  rgba(248, 113, 113, 0.40);
+
+$radius-sm:      8px;
+$radius-md:      14px;
+$radius-lg:      18px;
+$radius-pill:    100px;
+
+$font-base:      system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+
+$theme: dark;
+
+// ── Миксины ────────────────────────────────────────────────────
+
+// Миксин карточки с настраиваемым радиусом
+@mixin card($radius: $radius-md) {
+  border-radius: $radius;
+  border: 1px solid $border-color;
+  background: $bg-panel;
+}
+
+// Миксин контейнера с максимальной шириной
+@mixin container($w: 1140px) {
+  max-width: $w;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+// Миксин кнопки — принимает цвет фона и рамки
+@mixin btn-variant($bg, $border-clr) {
+  background: $bg;
+  border: 1px solid $border-clr;
+  color: $text-primary;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  border-radius: $radius-sm;
+  padding: 8px 14px;
+  transition: opacity 0.15s ease, transform 0.1s ease;
+  &:hover  { opacity: 0.82; }
+  &:active { transform: scale(0.97); }
+}
+
+// Миксин flex-строки с настройками
+@mixin flex-row($gap: 12px, $justify: flex-start, $align: center) {
+  display: flex;
+  align-items: $align;
+  justify-content: $justify;
+  gap: $gap;
+}
+
+// ── Сброс и базовые стили ──────────────────────────────────────
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  // Условная конструкция — тёмная тема (Занятие 1)
+  @if $theme == dark {
+    background: $bg-dark;
+    color: $text-primary;
+  } @else {
+    background: #f5f5f8;
+    color: #111;
+  }
+  font-family: $font-base;
+  font-size: 14px;
+  line-height: 1.55;
+  min-height: 100vh;
+}
+
+// ── Шапка ──────────────────────────────────────────────────────
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(13, 17, 23, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid $border-color;
+
+  &__inner {
+    @include container();
+    @include flex-row(0, space-between);
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+
+  &__logo {
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: -0.6px;
+
+    // Вложенность — акцентный span
+    span { color: $accent; }
+  }
+
+  &__tagline {
+    font-size: 12px;
+    color: $text-muted;
+    padding: 3px 10px;
+    border-radius: $radius-pill;
+    border: 1px solid $border-color;
+  }
+}
+
+// ── Страница ───────────────────────────────────────────────────
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main { flex: 1; padding: 28px 0 56px; }
+
+.container { @include container(); }
+
+// ── Тулбар ────────────────────────────────────────────────────
+.toolbar {
+  @include flex-row(12px, space-between);
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  &__left  { @include flex-row(14px); flex-wrap: wrap; }
+  &__title { font-size: 24px; font-weight: 800; letter-spacing: -0.4px; }
+  &__count {
+    font-size: 12px;
+    color: $text-muted;
+    padding: 3px 10px;
+    border-radius: $radius-pill;
+    background: $bg-panel;
+    border: 1px solid $border-color;
+  }
+}
+
+// ── Фильтры ───────────────────────────────────────────────────
+.filters {
+  @include flex-row(8px);
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+
+  &__btn {
+    padding: 6px 16px;
+    border-radius: $radius-pill;
+    border: 1px solid $border-color;
+    background: transparent;
+    color: $text-muted;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: inherit;
+    transition: all 0.15s ease;
+
+    &:hover {
+      border-color: $accent-border;
+      color: $text-primary;
+    }
+
+    // Модификатор активного фильтра
+    &--active {
+      background: $accent-bg;
+      border-color: $accent-border;
+      color: $text-primary;
+    }
+  }
+}
+
+// ── Кнопки ────────────────────────────────────────────────────
+.btn {
+  @include btn-variant(transparent, $border-color);
+
+  &--primary { @include btn-variant($accent-bg, $accent-border); }
+  &--danger  { @include btn-variant($danger-bg, $danger-border); }
+  &--sm      { padding: 5px 10px; font-size: 12px; }
+}
+
+// ── Сетка курсов ──────────────────────────────────────────────
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 18px;
+}
+
+// ── Карточка курса ─────────────────────────────────────────────
+.course-card {
+  @include card($radius-md);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    border-color: $accent-border;
+    box-shadow: 0 0 0 1px rgba(167, 139, 250, 0.10);
+  }
+
+  // Шапка карточки — категория + id
+  &__header {
+    @include flex-row(8px, space-between, center);
+  }
+
+  &__category {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: $radius-pill;
+    background: $accent-bg;
+    border: 1px solid $accent-border;
+    white-space: nowrap;
+  }
+
+  &__id {
+    font-size: 11px;
+    color: $text-muted;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__name {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  &__description {
+    font-size: 13px;
+    color: $text-muted;
+    line-height: 1.55;
+    flex: 1;
+  }
+
+  // Мета-строка: автор, длительность, уровень
+  &__meta {
+    @include flex-row(10px);
+    flex-wrap: wrap;
+  }
+
+  &__meta-item {
+    font-size: 12px;
+    color: $text-muted;
+    @include flex-row(4px);
+
+    // Иконка-кружок перед текстом
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: $accent;
+      opacity: 0.6;
+    }
+
+    &:first-child::before { display: none; }
+  }
+
+  // Подвал карточки — цена + места
+  &__footer {
+    @include flex-row(8px, space-between, center);
+    padding-top: 4px;
+    border-top: 1px solid $border-color;
+  }
+
+  &__price {
+    font-size: 20px;
+    font-weight: 800;
+  }
+
+  // Бейдж наличия мест
+  &__seats {
+    font-size: 12px;
+    padding: 3px 8px;
+    border-radius: $radius-sm;
+
+    &--available {
+      background: $green-bg;
+      color: $green;
+      border: 1px solid $green-border;
+    }
+
+    &--few {
+      background: $amber-bg;
+      color: $amber;
+      border: 1px solid $amber-border;
+    }
+
+    &--sold {
+      background: $danger-bg;
+      color: $danger;
+      border: 1px solid $danger-border;
+    }
+  }
+
+  &__actions {
+    @include flex-row(8px);
+  }
+}
+
+// ── Уровень ───────────────────────────────────────────────────
+.level-badge {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: $radius-pill;
+
+  &--novice    { background: $green-bg;  color: $green;  border: 1px solid $green-border; }
+  &--medium    { background: $amber-bg;  color: $amber;  border: 1px solid $amber-border; }
+  &--advanced  { background: $accent-bg; color: $accent; border: 1px solid $accent-border; }
+}
+
+// ── Пустые состояния ──────────────────────────────────────────
+.empty, .loading {
+  padding: 48px;
+  text-align: center;
+  color: $text-muted;
+  font-size: 15px;
+  border-radius: $radius-md;
+  border: 1px dashed $border-color;
+}
+
+// ── Модальное окно ────────────────────────────────────────────
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 200;
+}
+
+.modal {
+  @include card($radius-lg);
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #111827;
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.5);
+
+  &__header {
+    @include flex-row(0, space-between);
+    padding: 16px 18px;
+    border-bottom: 1px solid $border-color;
+    position: sticky;
+    top: 0;
+    background: #111827;
+    z-index: 1;
+  }
+
+  &__title { font-size: 16px; font-weight: 700; }
+
+  &__body {
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  &__footer {
+    @include flex-row(8px, flex-end);
+    padding: 14px 18px;
+    border-top: 1px solid $border-color;
+  }
+}
+
+.icon-btn {
+  width: 32px;
+  height: 32px;
+  @include flex-row(0, center);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $radius-sm;
+  border: 1px solid $border-color;
+  background: transparent;
+  color: $text-primary;
+  cursor: pointer;
+  font-size: 13px;
+  &:hover { background: $bg-panel; }
+}
+
+// ── Форма ─────────────────────────────────────────────────────
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  label { font-size: 13px; color: $text-muted; }
+
+  &--row {
+    flex-direction: row;
+    gap: 12px;
+    > * { flex: 1; }
+  }
+}
+
+.input, .select, .textarea {
+  padding: 10px 12px;
+  border-radius: $radius-sm;
+  border: 1px solid $border-color;
+  background: rgba(255,255,255,0.04);
+  color: $text-primary;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.15s ease;
+
+  &:focus { border-color: $accent-border; }
+}
+
+.textarea  { resize: vertical; min-height: 75px; }
+.select option { background: #111827; }
+
+// ── Подвал ────────────────────────────────────────────────────
+.footer {
+  border-top: 1px solid $border-color;
+  background: rgba(255,255,255,0.015);
+
+  &__inner {
+    @include container();
+    padding-top: 16px;
+    padding-bottom: 16px;
+    @include flex-row(0, space-between);
+    color: $text-muted;
+    font-size: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
