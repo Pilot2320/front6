@@ -20,6 +20,7 @@
 
 ### Занятие 1 — CSS-препроцессоры (SASS)
 Файл: `frontend/src/pages/ProductsPage/ProductsPage.scss`
+цель использования для применени цветовой гаммы для карточек товара и для самого сайта
 
 - **Переменные**: `$bg-dark`, `$accent`, `$border-color`, `$radius-md`, `$font-base` и 15+ других
 - **Миксины**: `card($radius)`, `container($w)`, `btn-variant($bg, $border)`, `flex-row($gap, $justify, $align)` — параметризованные блоки стилей
