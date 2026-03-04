@@ -29,6 +29,7 @@
 
 ### Занятие 2 — Сервер на Node.js + Express
 Файл: `backend/app.js`
+Для написания backend сайта
 
 - **5 CRUD-маршрутов**: `POST /api/courses`, `GET /api/courses`, `GET /api/courses/:id`, `PATCH /api/courses/:id`, `DELETE /api/courses/:id`
 - **Middleware**: `express.json()`, кастомный логгер запросов, CORS
@@ -36,6 +37,7 @@
 
 ### Занятие 3 — JSON и API
 Файл: `frontend/src/api/index.js`
+Для упрощения фаловой системы и устранения макорон
 
 - Все данные курсов передаются в формате **JSON**
 - `axios.create()` с `baseURL` и автоматическими заголовками
@@ -43,6 +45,7 @@
 
 ### Занятие 4 — API + React
 Файлы: `frontend/src/pages/ProductsPage/`, `frontend/src/components/`
+Для расширения возмодностей сайта
 
 - **React-компоненты**: `CourseCard`, `CourseModal`, `ProductsPage`
 - Полный **CRUD через UI**: просмотр, добавление, редактирование, удаление
@@ -51,6 +54,7 @@
 
 ### Занятие 5 — Расширенный REST API (Swagger)
 Файл: `backend/app.js` (JSDoc-аннотации над каждым маршрутом)
+Для быстрого получения информации и администрирования
 
 - Описана схема **Course** со всеми полями и примером
 - Все **5 эндпоинтов** задокументированы: параметры, тело запроса, коды ответов
